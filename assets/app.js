@@ -42,9 +42,18 @@
   };
 
   const THEMES = new Set(["classic", "midnight", "festive"]);
+  let scrollReveal = null;
 
   function prefersReducedMotion() {
     return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function clamp01(value) {
+    return Math.min(1, Math.max(0, value));
+  }
+
+  function lerp(a, b, t) {
+    return a + (b - a) * t;
   }
 
   function normalizeHash(hash) {
@@ -132,6 +141,10 @@
 
   function setOpen(isOpen) {
     document.body.classList.toggle("is-open", isOpen);
+    if (!isOpen) {
+      document.body.classList.remove("sparkle-peak");
+    }
+    scrollReveal?.update();
     if (isOpen) {
       // Move focus into the card for keyboard users
       window.setTimeout(() => {
@@ -142,8 +155,8 @@
   }
 
   function replayOpen() {
-    setOpen(false);
-    window.setTimeout(() => setOpen(true), prefersReducedMotion() ? 0 : 220);
+    setOpen(true);
+    scrollReveal?.replay();
   }
 
   function isLocalFile() {
@@ -175,6 +188,19 @@
     },
   };
 
+  function readEmbeddedJson(id) {
+    const node = document.getElementById(id);
+    if (!node) return null;
+    try {
+      const raw = (node.textContent || "").trim();
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (err) {
+      console.warn(`Failed to parse embedded JSON: ${id}`, err);
+      return null;
+    }
+  }
+
   async function loadJson(url) {
     const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
@@ -183,6 +209,12 @@
 
   async function loadData() {
     try {
+      const embeddedCollections = readEmbeddedJson("embeddedCollections");
+      const embeddedRecipients = readEmbeddedJson("embeddedRecipients");
+      if (embeddedCollections && embeddedRecipients) {
+        els.localNote.hidden = true;
+        return { collections: embeddedCollections, recipients: embeddedRecipients };
+      }
       const [collections, recipients] = await Promise.all([
         loadJson("data/collections.json"),
         loadJson("data/recipients.json"),
@@ -487,8 +519,132 @@
     };
   }
 
+  function setupScrollReveal() {
+    const section = document.querySelector("[data-scroll-reveal]");
+    if (!section) return { update() {}, nudge() {}, replay() {} };
+
+    const stage = section.querySelector(".stage");
+    if (!stage) return { update() {}, nudge() {}, replay() {} };
+
+    const hint = section.querySelector(".scroll-hint");
+    const autoScrollMode = document.body?.dataset?.scrollMode === "auto";
+
+    // Tuning constants for pull-out motion.
+    const letterStart = 140;
+    const letterEnd = -160;
+    const flapStart = -120;
+    const flapEnd = -155;
+
+    let raf = 0;
+    let sparkleArmed = false;
+    let lastProgress = 0;
+
+    function applyVars(letterY, flapRot, contentOpacity, hintOpacity) {
+      stage.style.setProperty("--letterY", `${letterY}px`);
+      stage.style.setProperty("--flapRot", `${flapRot}deg`);
+      stage.style.setProperty("--contentOpacity", contentOpacity.toFixed(3));
+      stage.style.setProperty("--hintOpacity", hintOpacity.toFixed(3));
+      if (hint) hint.style.opacity = "";
+    }
+
+    function setClosed() {
+      applyVars(160, 0, 0, 0);
+    }
+
+    function setOpenRest() {
+      applyVars(letterStart, flapStart, 0, 1);
+    }
+
+    function setOpenFinal() {
+      applyVars(letterEnd, flapEnd, 1, 0);
+    }
+
+    function getProgress() {
+      const rect = section.getBoundingClientRect();
+      const total = rect.height - window.innerHeight;
+      if (total <= 0) return 0;
+      const scrolled = -rect.top;
+      return clamp01(scrolled / total);
+    }
+
+    function update() {
+      const isOpen = document.body.classList.contains("is-open");
+      if (!isOpen) {
+        sparkleArmed = false;
+        lastProgress = 0;
+        setClosed();
+        return;
+      }
+
+      if (prefersReducedMotion()) {
+        setOpenFinal();
+        return;
+      }
+
+      const p = getProgress();
+      lastProgress = p;
+
+      // Map scroll progress into motion + fade timing.
+      const letterY = lerp(letterStart, letterEnd, p);
+      const flapRot = lerp(flapStart, flapEnd, p);
+      const contentOpacity = clamp01((p - 0.25) / 0.35);
+      const hintOpacity = clamp01(1 - (p - 0.02) / 0.13);
+
+      applyVars(letterY, flapRot, contentOpacity, hintOpacity);
+
+      if (p > 0.85 && !sparkleArmed) {
+        sparkleArmed = true;
+        document.body.classList.add("sparkle-peak");
+        window.setTimeout(() => document.body.classList.remove("sparkle-peak"), 1200);
+      }
+    }
+
+    function onScroll() {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = 0;
+        update();
+      });
+    }
+
+    function nudge() {
+      const rect = section.getBoundingClientRect();
+      const top = rect.top + window.scrollY;
+      const total = rect.height - window.innerHeight;
+
+      if (autoScrollMode && !prefersReducedMotion() && total > 0 && lastProgress < 0.05) {
+        const target = top + total * 0.88;
+        window.scrollTo({ top: target, behavior: "smooth" });
+        return;
+      }
+
+      if (window.scrollY < top + 24 && lastProgress < 0.01) {
+        window.scrollTo({ top: top + 40, behavior: "smooth" });
+      }
+    }
+
+    function replay() {
+      const top = section.getBoundingClientRect().top + window.scrollY;
+      sparkleArmed = false;
+      document.body.classList.remove("sparkle-peak");
+      if (!prefersReducedMotion()) setOpenRest();
+      window.scrollTo({ top, behavior: "smooth" });
+      onScroll();
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+
+    update();
+
+    return { update, nudge, replay };
+  }
+
   function setupEvents(data) {
-    const open = () => setOpen(true);
+    const open = () => {
+      setOpen(true);
+      scrollReveal?.nudge();
+    };
     const close = () => setOpen(false);
 
     els.openBtn?.addEventListener("click", open);
@@ -496,6 +652,16 @@
     els.replayBtn?.addEventListener("click", replayOpen);
 
     els.wax?.addEventListener("click", open);
+    els.envelope?.addEventListener("click", () => {
+      if (document.body.classList.contains("is-open")) return;
+      open();
+    });
+    els.envelope?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        open();
+      }
+    });
 
     els.copyLinkBtn?.addEventListener("click", async () => {
       const url = els.copyLinkBtn.dataset.copyValue || window.location.href;
@@ -517,6 +683,7 @@
 
   async function main() {
     const data = await loadData();
+    scrollReveal = setupScrollReveal();
     setupEvents(data);
     setupTilt();
     setupSparkle();

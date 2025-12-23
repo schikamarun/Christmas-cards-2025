@@ -109,9 +109,10 @@ If WhatsApp keeps showing an old preview:
 ## Replacing the OG image
 
 - `assets/og-image.svg` is the editable source.
-- `assets/og-image.png` is used by Open Graph and Twitter tags.
+- `assets/og-image.png` is used by Open Graph and Twitter tags (placeholder by default).
 
-If you edit the SVG, export to PNG at **1200×630** and overwrite `assets/og-image.png`.
+This repo ships with a lightweight placeholder PNG so OG tags resolve.
+Export the SVG to PNG at **1200×630** and overwrite `assets/og-image.png` for the real preview.
 
 ## Local preview (file://)
 

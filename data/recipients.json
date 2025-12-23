@@ -2,24 +2,85 @@
   "defaultCollection": "christmas-2025",
   "recipients": {
     "christmas-2025": {
-      "anna": {
-        "name": "Anna",
-        "message": "Wishing you a Christmas that feels like a quiet winter morning—soft light, warm tea, and the people you love close by.\n\nThank you for being part of my year.",
-        "signature": "— Dominik",
-        "theme": "classic",
-        "date": "2025-12-24"
+      "nik": {
+        "name": "Nik",
+        "message": "Hey Nik,Danke für die viele tolle Erläbnis, wo mir das Johr hei chönne zeme ha - vo Camping i de Berge, über Segelabentüür, Wiifestivals und vieles meh. Ig bi richtig dankbar, dass du Teil vo mim Läbe bisch und freue mi uf alli wiitere Erläbnis im 2026.",
+        "signature": "— Dominik"
       },
-      "max": {
-        "name": "Max",
-        "message": "Merry Christmas! I hope you get a few slow days to breathe, reset, and enjoy the cozy parts of the season.",
-        "signature": "— Dominik",
-        "theme": "midnight"
+      "fabi": {
+        "name": "Fabi",
+        "message": "Hey suffering Buddy - Mir heis zwar gschafft eus souverän oft im Training z verpasse :P Das treit ar Sach aber nüt ab, dass ig so froh bi, dass mir eus das Johr agfründet hei und immer besser kenneglehrt hei. Immer wenni irgenwelchi Life Struggles ha und e rot bruuche, weissi woni es offes Ohr und gueti Rotschläg berchumme. Danke dass du Teil vo mim Läbe bisch <3\n\nIg wünsche dir frohi Wiehnachstäg und freue mi uf es abentüürlichs 2026!",
+        "signature": "— Dominik"
+      },
+      "michael": {
+        "name": "Michael",
+        "message": "Michael,\nWe did not get to hang out often this year - and yet - every time it is such a pleasure to see you. Even though the mere time we get to spend together may not be so much in hours, it more than compensates this in quality. Somehow I feel like I've known you since my childhood. I wish you very happy holidays and a good start to 2026 - and I am so very much looking forward to have you with me on the occasion my 30th birthday! <3 - Also don't forget we are going to get our boat license in Croatia this summer ;)",
+        "signature": "— Dominik"
+      },
+      "leah": {
+        "name": "Leah",
+        "message": "Au wenn mir üs nümm jede 2. Tag gseh im Läbe, bisch du doch irgendwie e konstante i mim Läbe. Mir hei so vüu scho zäme erläbt und bald bisch du denn au endlich fertig mitem Studium und denn chöi mer s Erwachseneläbe zeme unsicher mache :P\n\nFrohi Wiehnachte und e guete Rutsch is 2026",
+        "signature": "— Dominik"
+      },
+      "sarah": {
+        "name": "Sarah",
+        "message": "Sarah, wenn ig as 2025 mit dir denke, denn chöme mer ganz vüu Sache i Sinn - Granny Cart, Wii Festival, Sauna Hats, Thermalbrunne, ganz vüu dummi sprüch und immer e riisigi Portion lache ;) - es isch eifach Toll wie du e feschde Teil vo eusere Gruppe bisch worde, und immer wieder eppis organisiersch und eifach immer gueti Luune hesch. Frohi Feschdtäg dir und dinere Family",
+        "signature": "— Dominik"
       },
       "gina": {
         "name": "Gina",
-        "message": "Warm wishes for a peaceful Christmas—and a 2026 full of good surprises.",
-        "signature": "— Dominik",
-        "theme": "festive"
+        "message": "Jaa Gina, du schaffsch es endlich, nid dis ganze Läbe verplanet z haa ;) I findes super, dass mir eus das Johr e chli meh gseh hei und irgenwelchi random Aktivitäte mit dine Friends mache eifach au immer recht vüu Spass. Ig bi gspannt, was s Johr 2026 so wird bringe.",
+        "signature": "— Dominik"
+      },
+      "ben": {
+        "name": "Ben",
+        "message": "You did it - for the first time you properly dared a trip outside of your home continent (Yepp, Cancun does not count). You visited 3 countries, experienced the steep and bumpy mountains of Austria and were forced to integrate with my very progressive friends :P\n\nIm very happy that 13 years after I was in the U.S. as an exchange student I finally got to welcome you in my home country and show you a bit more what my life looks like. Happy holidays and I wish you a good start to 2026.",
+        "signature": "— Dominik"
+      },
+      "jarek": {
+        "name": "Jarek",
+        "message": "2025 was the year in which we got to celebrate 10 years of WILDe youth. And at the same time it is almost 10 years of our friendship. It still bugs me that you couldn't make it for street parade (because it was a lot of fun) but even more I am looking forward that you will be able to celebrate my 30th birthday with me in January. Until then, happy holidays, a good start to 2026 and see you soon!",
+        "signature": "— Dominik"
+      },
+      "berka": {
+        "name": "Berka",
+        "message": "Polish bitch! - you know i think it is very much a pity we did not get to hang out in 2025 - I clearly felt that something was missing in my life. But that just means, we need to make it happen in 2026 ;) - And you will start with quite an adventure into that very year. Merry christmas, take care and looking forward to see you soon!",
+        "signature": "— Dominik"
+      },
+      "lauren": {
+        "name": "Lauren",
+        "message": "Im a bit sad, that there was no Dom & Lozzy Chapter in 2025 - but 2026 is coming, and we should make sure that there will be a new season of our travel adventures. Happy Holidays Lozzy - and know that I miss you very much!",
+        "signature": "— Dominik"
+      },
+      "karol": {
+        "name": "Karol",
+        "message": "Hey Karol, I wanted to send you a little greetings card back to Poland. When we first met - i found it a bit difficult to establish a connection, but we spent some very nice walks and talks together. And eventually, you have found a new home in Zurich. I hope you will have a cool project in Amsterdam, reduce your working hours significantly and I guess I will see you again in Zurich in the summer.\n\nHappy holidays and a good start to 2026",
+        "signature": "— Dominik"
+      },
+      "manu": {
+        "name": "Manu",
+        "message": "Hey Manu, und scho isch s Johr wieder verbii. Mir hei eus natürlich nümm so oft gseh wie ir erschde Hälfti vom Johr und doch wetti gärn no einisch Merci säge für die schöne Sache wo mir erläbt hei. Und du bisch jo tatsächlich die Ruhe in Person",
+        "signature": "— Dominik"
+      },
+      "pehuen": {
+        "name": "Pehuen",
+        "message": "It's really time you stop going to all these weddings hahaha! I was very happy we had so many fun experiences in 2025 but we did miss you on our Portugal trip. I am already sad, that you are going to be leaving us in 2026 and I can tell you that we will miss you a lot. There's one thing i can tell - having you around is always good vibes and it is very contagious!\n\nWishing you happy holidays, a good start to 2026 and looking forward to see you then.",
+        "signature": "— Dominik"
+      },
+      "jessica": {
+        "name": "Jessica",
+        "message": "We've had a lot of fun times in 2026 - there is just one thing that I regret - you could not join me and Beatriz for Kiki haha.\n\nWe've shared so many memories from skiing lessons over the Portugal trip and there will be many more for 2026. Happy Holidays and see you in Singapore",
+        "signature": "— Dominik"
+      },
+      "quinten": {
+        "name": "Quinten",
+        "message": "Crazy Quinten - i love how you have all that energy to come up with new projects, as the weeks count. I wish you happy holidays and a good start to 2026 - excited what that year will bring.",
+        "signature": "— Dominik"
+      },
+      "christian": {
+        "name": "Christian",
+        "message": "Aso lueg, ig bi gäng no sehr truurig, dass du die konsequent vo mine Parties drücksch - Shame on you! Aber es isch toll wie mir eus immer wieder gseh und über Gott und die Welt chöi rede - ig hätt jo nie dänkt, dass sich us ere Networkbekanntschaft tatäschlich e sone tolli Fründschaft entwicklet :)\n\nIg wünsche dir frohi Feschdtäg, e guete Rutsch is neue Johr und bis glii!",
+        "signature": "— Dominik"
       }
     }
   }
