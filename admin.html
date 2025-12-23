@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin — Link & Recipient Generator</title>
+    <style>
+      :root {
+        --bg: #0b0f10;
+        --fg: #f2efe7;
+        --muted: rgba(255, 255, 255, 0.72);
+        --panel: rgba(255, 255, 255, 0.06);
+        --border: rgba(255, 255, 255, 0.14);
+        --accent: #c9a86a;
+        --danger: #ff6b6b;
+        --radius: 16px;
+        --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--sans);
+        color: var(--fg);
+        background:
+          radial-gradient(1000px 700px at 10% 0%, rgba(201, 168, 106, 0.12), transparent 55%),
+          radial-gradient(900px 700px at 110% 10%, rgba(132, 183, 255, 0.10), transparent 55%),
+          var(--bg);
+      }
+
+      a {
+        color: inherit;
+      }
+
+      header {
+        padding: 16px;
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 1.1rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .back {
+        text-decoration: none;
+        opacity: 0.85;
+      }
+
+      .wrap {
+        padding: 0 16px 28px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .banner {
+        border: 1px solid color-mix(in oklab, var(--danger) 55%, var(--border) 45%);
+        background: rgba(255, 107, 107, 0.10);
+        padding: 12px 12px;
+        border-radius: var(--radius);
+        line-height: 1.45;
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: 1fr;
+        margin-top: 14px;
+      }
+
+      @media (min-width: 980px) {
+        .grid {
+          grid-template-columns: 1.1fr 0.9fr;
+          align-items: start;
+        }
+      }
+
+      .panel {
+        border: 1px solid var(--border);
+        background: var(--panel);
+        border-radius: var(--radius);
+        padding: 14px;
+      }
+
+      .panel h2 {
+        margin: 0 0 10px;
+        font-size: 1.05rem;
+      }
+
+      .row {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      @media (min-width: 720px) {
+        .row.two {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .row.three {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+
+      label {
+        display: block;
+        font-size: 0.9rem;
+        opacity: 0.88;
+        margin-bottom: 6px;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px 10px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(0, 0, 0, 0.22);
+        color: var(--fg);
+        outline: none;
+      }
+
+      textarea {
+        min-height: 110px;
+        resize: vertical;
+        font-family: var(--sans);
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: color-mix(in oklab, var(--accent) 55%, rgba(255, 255, 255, 0.18) 45%);
+        box-shadow: 0 0 0 3px rgba(201, 168, 106, 0.18);
+      }
+
+      .btn {
+        appearance: none;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        background: rgba(255, 255, 255, 0.06);
+        color: var(--fg);
+        padding: 10px 12px;
+        border-radius: 999px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        border-color: color-mix(in oklab, var(--accent) 60%, rgba(255, 255, 255, 0.14) 40%);
+        background:
+          radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.20), transparent 45%),
+          linear-gradient(90deg, rgba(201, 168, 106, 0.40), rgba(255, 255, 255, 0.06));
+      }
+
+      .btn.danger {
+        border-color: rgba(255, 107, 107, 0.45);
+        background: rgba(255, 107, 107, 0.12);
+      }
+
+      .btn:active {
+        transform: translateY(1px);
+      }
+
+      .muted {
+        opacity: 0.78;
+        font-size: 0.92rem;
+      }
+
+      .pill {
+        display: inline-block;
+        font-family: var(--mono);
+        font-size: 0.82rem;
+        padding: 5px 8px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(0, 0, 0, 0.16);
+      }
+
+      .table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .table th,
+      .table td {
+        padding: 10px 10px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+        vertical-align: top;
+        font-size: 0.92rem;
+      }
+
+      .table th {
+        font-size: 0.84rem;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        opacity: 0.85;
+      }
+
+      code,
+      pre {
+        font-family: var(--mono);
+      }
+
+      pre {
+        white-space: pre-wrap;
+        word-break: break-word;
+        margin: 0;
+        padding: 12px;
+        border-radius: 14px;
+        background: rgba(0, 0, 0, 0.26);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .toast {
+        min-height: 1.2em;
+        margin-top: 10px;
+        opacity: 0.0;
+        transform: translateY(6px);
+        transition: opacity 180ms ease, transform 180ms ease;
+      }
+
+      .toast.show {
+        opacity: 0.92;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <h1>Admin — Link & Recipient Generator</h1>
+      <a class="back" href="index.html">← Back to card</a>
+    </header>
+
+    <div class="wrap">
+      <div class="banner">
+        <strong>admin.html is not protected; don’t store secrets. GitHub Pages is public.</strong>
+        <div class="muted">
+          This page generates JSON and links for you to copy into <span class="pill">data/collections.json</span> and
+          <span class="pill">data/recipients.json</span>.
+        </div>
+      </div>
+
+      <div class="grid">
+        <section class="panel" aria-label="Collection editor">
+          <h2>1) Collection</h2>
+          <div class="row two">
+            <div>
+              <label for="existingCollections">Choose existing (optional)</label>
+              <select id="existingCollections">
+                <option value="">(create / edit by slug)</option>
+              </select>
+              <div class="muted">If the repo data loads, you can select an existing collection to edit.</div>
+            </div>
+            <div>
+              <label for="makeDefault">Default collection</label>
+              <select id="makeDefault">
+                <option value="yes">Make this the default (links use #/&lt;recipient&gt;)</option>
+                <option value="no">Keep current default (links use #/collection/&lt;c&gt;/&lt;r&gt;)</option>
+              </select>
+              <div class="muted">WhatsApp previews stay generic (hash is ignored).</div>
+            </div>
+          </div>
+
+          <div class="row two">
+            <div>
+              <label for="collectionSlug">Collection slug</label>
+              <input id="collectionSlug" placeholder="christmas-2025" value="christmas-2025" />
+              <div class="muted">Used in routes: <span class="pill">#/collection/&lt;collectionSlug&gt;</span></div>
+            </div>
+            <div>
+              <label for="defaultTheme">Default theme</label>
+              <select id="defaultTheme">
+                <option value="classic">classic</option>
+                <option value="midnight">midnight</option>
+                <option value="festive">festive</option>
+              </select>
+              <div class="muted">Recipients can override per person.</div>
+            </div>
+          </div>
+
+          <div class="row two" style="margin-top: 10px">
+            <div>
+              <label for="collectionTitle">Title</label>
+              <input id="collectionTitle" value="Merry Christmas 💌" />
+            </div>
+            <div>
+              <label for="collectionSubtitle">Subtitle</label>
+              <input id="collectionSubtitle" value="A little letter for you" />
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 10px">
+            <div>
+              <label for="footerNote">Footer note</label>
+              <input id="footerNote" value="Wishing you warmth and light this season." />
+            </div>
+          </div>
+
+          <h2 style="margin-top: 16px">2) Add recipients</h2>
+          <div class="row two">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" placeholder="Anna" />
+            </div>
+            <div>
+              <label for="slug">Slug (auto)</label>
+              <input id="slug" placeholder="anna" />
+              <div class="muted">Auto-generated with collision handling when you add.</div>
+            </div>
+          </div>
+
+          <div class="row" style="margin-top: 10px">
+            <div>
+              <label for="message">Message (supports blank lines)</label>
+              <textarea id="message" placeholder="Write something warm and minimal…"></textarea>
+            </div>
+          </div>
+
+          <div class="row three" style="margin-top: 10px">
+            <div>
+              <label for="signature">Signature</label>
+              <input id="signature" placeholder="— Dominik" value="— Dominik" />
+            </div>
+            <div>
+              <label for="theme">Theme override (optional)</label>
+              <select id="theme">
+                <option value="">(use collection default)</option>
+                <option value="classic">classic</option>
+                <option value="midnight">midnight</option>
+                <option value="festive">festive</option>
+              </select>
+            </div>
+            <div>
+              <label for="date">Date (optional)</label>
+              <input id="date" placeholder="2025-12-24" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" id="addRecipient" type="button">Add recipient</button>
+            <button class="btn danger" id="clearAll" type="button">Clear all</button>
+          </div>
+
+          <h2 style="margin-top: 16px">3) Import (CSV-like)</h2>
+          <div class="muted">
+            Paste lines in the format: <span class="pill">Name | Message | Signature | Theme | Date</span>.
+            <br />Theme and Date are optional.
+          </div>
+          <div class="row" style="margin-top: 10px">
+            <textarea
+              id="importBox"
+              placeholder="Anna | Warm wishes… | — Dominik | classic | 2025-12-24
+Max | Merry Christmas! | — Dominik | midnight"
+            ></textarea>
+          </div>
+          <div class="actions">
+            <button class="btn" id="importBtn" type="button">Import lines</button>
+          </div>
+
+          <p class="toast" id="toast" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="panel" aria-label="Outputs">
+          <h2>Output A) JSON payload</h2>
+          <div class="muted">
+            Copy/paste into your repo files. This payload is shaped to match the required schema.
+          </div>
+          <div class="actions">
+            <button class="btn" id="copyCollections" type="button">Copy collections.json</button>
+            <button class="btn" id="copyRecipients" type="button">Copy recipients.json</button>
+          </div>
+          <pre id="jsonOut"></pre>
+
+          <h2 style="margin-top: 16px">Output B) Recipient links</h2>
+          <div class="muted">
+            Links are hash routes (WhatsApp previews will still be generic because hash is ignored).
+          </div>
+          <table class="table" id="linksTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Slug</th>
+                <th>Route</th>
+                <th>Link</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+
+          <h2 style="margin-top: 16px">Output C) WhatsApp messages</h2>
+          <div class="row" style="margin-top: 10px">
+            <div>
+              <label for="waTemplate">Template</label>
+              <input
+                id="waTemplate"
+                value="Hey {name}! 🎄💌 I made you a Christmas letter — open it here: {url}"
+              />
+              <div class="muted">Available tokens: <span class="pill">{name}</span> <span class="pill">{url}</span></div>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="copyAllMessages" type="button">Copy all messages</button>
+          </div>
+          <pre id="messagesOut"></pre>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      (() => {
+        "use strict";
+
+        const THEMES = new Set(["classic", "midnight", "festive"]);
+
+        const els = {
+          existingCollections: document.getElementById("existingCollections"),
+          makeDefault: document.getElementById("makeDefault"),
+
+          collectionSlug: document.getElementById("collectionSlug"),
+          defaultTheme: document.getElementById("defaultTheme"),
+          collectionTitle: document.getElementById("collectionTitle"),
+          collectionSubtitle: document.getElementById("collectionSubtitle"),
+          footerNote: document.getElementById("footerNote"),
+
+          name: document.getElementById("name"),
+          slug: document.getElementById("slug"),
+          message: document.getElementById("message"),
+          signature: document.getElementById("signature"),
+          theme: document.getElementById("theme"),
+          date: document.getElementById("date"),
+
+          addRecipient: document.getElementById("addRecipient"),
+          clearAll: document.getElementById("clearAll"),
+
+          importBox: document.getElementById("importBox"),
+          importBtn: document.getElementById("importBtn"),
+
+          jsonOut: document.getElementById("jsonOut"),
+          linksTableBody: document.querySelector("#linksTable tbody"),
+
+          waTemplate: document.getElementById("waTemplate"),
+          messagesOut: document.getElementById("messagesOut"),
+
+          copyCollections: document.getElementById("copyCollections"),
+          copyRecipients: document.getElementById("copyRecipients"),
+          copyAllMessages: document.getElementById("copyAllMessages"),
+
+          toast: document.getElementById("toast"),
+        };
+
+        const state = {
+          recipients: [], // { name, slug, message, signature, theme, date }
+          baseCollections: {},
+          baseRecipients: { defaultCollection: "", recipients: {} },
+        };
+
+        function toast(text) {
+          els.toast.textContent = text;
+          els.toast.classList.add("show");
+          window.clearTimeout(toast._t);
+          toast._t = window.setTimeout(() => els.toast.classList.remove("show"), 1400);
+        }
+
+        function slugify(input) {
+          const s = String(input || "")
+            .trim()
+            .toLowerCase()
+            // basic latinization
+            .normalize("NFKD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-+|-+$/g, "")
+            .replace(/--+/g, "-");
+          return s || "person";
+        }
+
+        function uniqueSlug(base) {
+          const existing = new Set(state.recipients.map((r) => r.slug));
+
+          const c = slugify(els.collectionSlug.value);
+          const baseGroup = state.baseRecipients?.recipients?.[c] || {};
+          for (const k of Object.keys(baseGroup)) existing.add(k);
+
+          if (!existing.has(base)) return base;
+          let i = 2;
+          while (existing.has(`${base}-${i}`)) i++;
+          return `${base}-${i}`;
+        }
+
+        function getBaseUrl() {
+          const { protocol, origin, pathname, href } = window.location;
+          if (protocol === "file:" || origin === "null") {
+            return href.split("#")[0];
+          }
+          const basePath = pathname.endsWith("/") ? pathname : pathname.replace(/[^/]+$/, "");
+          return origin + basePath;
+        }
+
+        function buildHashRoute(collectionSlug, recipientSlug) {
+          const c = String(collectionSlug || "").trim();
+          const r = String(recipientSlug || "").trim();
+
+          const wantsDefault = els.makeDefault.value === "yes";
+          const currentDefault = state.baseRecipients?.defaultCollection || "";
+          const isDefault = wantsDefault || (!currentDefault && c);
+
+          if (r && isDefault) return `#/${r}`;
+          if (c && r) return `#/collection/${c}/${r}`;
+          if (c) return `#/collection/${c}`;
+          return "#/";
+        }
+
+        function buildRecipientUrl(hash) {
+          return getBaseUrl() + hash;
+        }
+
+        function cleanTheme(value) {
+          const t = String(value || "").toLowerCase().trim();
+          return THEMES.has(t) ? t : "";
+        }
+
+        function buildCollectionsJson() {
+          const slug = slugify(els.collectionSlug.value);
+          const collections = { ...(state.baseCollections || {}) };
+          collections[slug] = {
+            title: String(els.collectionTitle.value || "").trim() || "Merry Christmas 💌",
+            subtitle: String(els.collectionSubtitle.value || "").trim() || "A little letter for you",
+            defaultTheme: cleanTheme(els.defaultTheme.value) || "classic",
+            footerNote: String(els.footerNote.value || "").trim() || "",
+          };
+          return collections;
+        }
+
+        function buildRecipientsJson() {
+          const collectionSlug = slugify(els.collectionSlug.value);
+          const recipients = structuredClone(state.baseRecipients?.recipients || {});
+          recipients[collectionSlug] = recipients[collectionSlug] || {};
+
+          for (const r of state.recipients) {
+            const obj = {
+              name: r.name,
+              message: r.message,
+              signature: r.signature,
+            };
+            if (r.theme) obj.theme = r.theme;
+            if (r.date) obj.date = r.date;
+            recipients[collectionSlug][r.slug] = obj;
+          }
+
+          return {
+            defaultCollection:
+              els.makeDefault.value === "yes"
+                ? collectionSlug
+                : state.baseRecipients?.defaultCollection || collectionSlug,
+            recipients,
+          };
+        }
+
+        function buildWhatsAppMessages() {
+          const tmpl = String(els.waTemplate.value || "").trim();
+          const c = slugify(els.collectionSlug.value);
+
+          const lines = [];
+          for (const r of state.recipients) {
+            const hash = buildHashRoute(c, r.slug);
+            const url = buildRecipientUrl(hash);
+            const text = tmpl.replaceAll("{name}", r.name).replaceAll("{url}", url);
+            lines.push(text);
+          }
+          return lines.join("\n\n");
+        }
+
+        function render() {
+          const collectionsJson = buildCollectionsJson();
+          const recipientsJson = buildRecipientsJson();
+
+          const out = {
+            "collections.json": collectionsJson,
+            "recipients.json": recipientsJson,
+          };
+          els.jsonOut.textContent = JSON.stringify(out, null, 2);
+
+          // Links table
+          els.linksTableBody.innerHTML = "";
+          const c = slugify(els.collectionSlug.value);
+
+          for (const r of state.recipients) {
+            const tr = document.createElement("tr");
+            const hash = buildHashRoute(c, r.slug);
+            const url = buildRecipientUrl(hash);
+
+            tr.innerHTML = `
+              <td>${escapeHtml(r.name)}</td>
+              <td><span class="pill">${escapeHtml(r.slug)}</span></td>
+              <td><span class="pill">${escapeHtml(hash)}</span></td>
+              <td><a href="${escapeAttr(url)}" target="_blank" rel="noopener">Open</a></td>
+            `;
+            els.linksTableBody.appendChild(tr);
+          }
+
+          // Messages
+          els.messagesOut.textContent = buildWhatsAppMessages();
+        }
+
+        function escapeHtml(s) {
+          return String(s)
+            .replaceAll("&", "&amp;")
+            .replaceAll("<", "&lt;")
+            .replaceAll(">", "&gt;")
+            .replaceAll('"', "&quot;")
+            .replaceAll("'", "&#39;");
+        }
+
+        function escapeAttr(s) {
+          return escapeHtml(s);
+        }
+
+        async function copy(text) {
+          try {
+            await navigator.clipboard.writeText(text);
+            return true;
+          } catch {
+            const ta = document.createElement("textarea");
+            ta.value = text;
+            ta.setAttribute("readonly", "");
+            ta.style.position = "fixed";
+            ta.style.left = "-9999px";
+            document.body.appendChild(ta);
+            ta.select();
+            let ok = false;
+            try {
+              ok = document.execCommand("copy");
+            } catch {
+              ok = false;
+            }
+            ta.remove();
+            return ok;
+          }
+        }
+
+        function addRecipientFromInputs() {
+          const name = String(els.name.value || "").trim();
+          if (!name) {
+            toast("Name is required.");
+            return;
+          }
+
+          const base = slugify(els.slug.value || name);
+          const slug = uniqueSlug(base);
+
+          const msg = String(els.message.value || "").trim();
+          const signature = String(els.signature.value || "").trim() || "—";
+          const theme = cleanTheme(els.theme.value);
+          const date = String(els.date.value || "").trim();
+
+          state.recipients.push({
+            name,
+            slug,
+            message: msg,
+            signature,
+            theme,
+            date,
+          });
+
+          // Clear inputs but keep signature
+          els.name.value = "";
+          els.slug.value = "";
+          els.message.value = "";
+          els.theme.value = "";
+          els.date.value = "";
+
+          toast(`Added ${name} (${slug}).`);
+          render();
+        }
+
+        function parseImportLines(text) {
+          const lines = String(text || "")
+            .split(/\r?\n/)
+            .map((l) => l.trim())
+            .filter(Boolean);
+
+          let added = 0;
+          for (const line of lines) {
+            const parts = line.split("|").map((p) => p.trim());
+            const name = parts[0] || "";
+            if (!name) continue;
+
+            const msg = parts[1] || "";
+            const signature = parts[2] || "—";
+            const theme = cleanTheme(parts[3] || "");
+            const date = parts[4] || "";
+
+            const slug = uniqueSlug(slugify(name));
+            state.recipients.push({ name, slug, message: msg, signature, theme, date });
+            added++;
+          }
+          return added;
+        }
+
+        // Auto slug preview while typing name
+        els.name.addEventListener("input", () => {
+          if (els.slug.value.trim()) return;
+          const s = slugify(els.name.value);
+          els.slug.value = s;
+        });
+
+        // Keep output up to date
+        for (const el of [
+          els.existingCollections,
+          els.makeDefault,
+          els.collectionSlug,
+          els.defaultTheme,
+          els.collectionTitle,
+          els.collectionSubtitle,
+          els.footerNote,
+          els.waTemplate,
+        ]) {
+          el.addEventListener("input", render);
+          el.addEventListener("change", render);
+        }
+
+        function populateExistingCollections() {
+          const options = [
+            { value: "", label: "(create / edit by slug)" },
+            ...Object.keys(state.baseCollections || {})
+              .sort()
+              .map((slug) => ({ value: slug, label: slug })),
+          ];
+          els.existingCollections.innerHTML = "";
+          for (const opt of options) {
+            const o = document.createElement("option");
+            o.value = opt.value;
+            o.textContent = opt.label;
+            els.existingCollections.appendChild(o);
+          }
+        }
+
+        function applyCollectionToForm(slug) {
+          const c = state.baseCollections?.[slug];
+          if (!c) return;
+          els.collectionSlug.value = slug;
+          els.collectionTitle.value = c.title || "";
+          els.collectionSubtitle.value = c.subtitle || "";
+          els.defaultTheme.value = cleanTheme(c.defaultTheme) || "classic";
+          els.footerNote.value = c.footerNote || "";
+
+          // If selecting the current default, prefer default routes.
+          if ((state.baseRecipients?.defaultCollection || "") === slug) {
+            els.makeDefault.value = "yes";
+          }
+        }
+
+        els.existingCollections.addEventListener("change", () => {
+          const slug = String(els.existingCollections.value || "").trim();
+          if (!slug) return;
+          applyCollectionToForm(slug);
+          render();
+          toast(`Loaded collection: ${slug}`);
+        });
+
+        async function tryLoadExisting() {
+          try {
+            const [collections, recipients] = await Promise.all([
+              fetch("data/collections.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : {})),
+              fetch("data/recipients.json", { cache: "no-store" }).then((r) => (r.ok ? r.json() : { defaultCollection: "", recipients: {} })),
+            ]);
+
+            if (collections && typeof collections === "object") state.baseCollections = collections;
+            if (recipients && typeof recipients === "object") state.baseRecipients = recipients;
+
+            // Default selection behavior: if repo already has a defaultCollection, keep it.
+            const dc = state.baseRecipients?.defaultCollection;
+            if (dc && typeof dc === "string") {
+              els.makeDefault.value = "no";
+              if (state.baseCollections?.[dc]) {
+                // Preload the existing default collection for convenience
+                els.existingCollections.value = dc;
+                applyCollectionToForm(dc);
+              }
+            }
+
+            populateExistingCollections();
+            render();
+          } catch {
+            // file:// often blocks fetch; keep working offline.
+            populateExistingCollections();
+            render();
+          }
+        }
+
+        els.addRecipient.addEventListener("click", addRecipientFromInputs);
+
+        els.importBtn.addEventListener("click", () => {
+          const count = parseImportLines(els.importBox.value);
+          toast(count ? `Imported ${count} recipients.` : "No valid lines found.");
+          render();
+        });
+
+        els.clearAll.addEventListener("click", () => {
+          if (!confirm("Clear all recipients?")) return;
+          state.recipients = [];
+          render();
+          toast("Cleared.");
+        });
+
+        els.copyCollections.addEventListener("click", async () => {
+          const text = JSON.stringify(buildCollectionsJson(), null, 2);
+          const ok = await copy(text);
+          toast(ok ? "Copied collections.json" : "Copy failed");
+        });
+
+        els.copyRecipients.addEventListener("click", async () => {
+          const text = JSON.stringify(buildRecipientsJson(), null, 2);
+          const ok = await copy(text);
+          toast(ok ? "Copied recipients.json" : "Copy failed");
+        });
+
+        els.copyAllMessages.addEventListener("click", async () => {
+          const text = buildWhatsAppMessages();
+          const ok = await copy(text);
+          toast(ok ? "Copied WhatsApp messages" : "Copy failed");
+        });
+
+        // Seed with a couple of examples
+        state.recipients.push(
+          {
+            name: "Anna",
+            slug: "anna",
+            message: "Wishing you a warm, peaceful Christmas and a beautiful start to the new year.",
+            signature: "— Dominik",
+            theme: "classic",
+            date: "2025-12-24",
+          },
+          {
+            name: "Max",
+            slug: "max",
+            message: "Merry Christmas! Enjoy a few slow days.",
+            signature: "— Dominik",
+            theme: "midnight",
+            date: "",
+          }
+        );
+
+        tryLoadExisting();
+      })();
+    </script>
+  </body>
+</html>

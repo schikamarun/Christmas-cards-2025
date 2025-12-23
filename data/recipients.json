@@ -1,0 +1,26 @@
+{
+  "defaultCollection": "christmas-2025",
+  "recipients": {
+    "christmas-2025": {
+      "anna": {
+        "name": "Anna",
+        "message": "Wishing you a Christmas that feels like a quiet winter morning—soft light, warm tea, and the people you love close by.\n\nThank you for being part of my year.",
+        "signature": "— Dominik",
+        "theme": "classic",
+        "date": "2025-12-24"
+      },
+      "max": {
+        "name": "Max",
+        "message": "Merry Christmas! I hope you get a few slow days to breathe, reset, and enjoy the cozy parts of the season.",
+        "signature": "— Dominik",
+        "theme": "midnight"
+      },
+      "gina": {
+        "name": "Gina",
+        "message": "Warm wishes for a peaceful Christmas—and a 2026 full of good surprises.",
+        "signature": "— Dominik",
+        "theme": "festive"
+      }
+    }
+  }
+}

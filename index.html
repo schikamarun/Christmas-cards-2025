@@ -1,1 +1,160 @@
-<p>Hello World!</p>
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="color-scheme" content="light dark" />
+		<title>Christmas Mail 💌</title>
+
+		<!--
+			IMPORTANT (WhatsApp / Open Graph):
+			WhatsApp previews ignore the hash (#) part of the URL, so previews are generic.
+			We intentionally use a single beautiful generic OG image.
+		-->
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="You’ve got Christmas mail 💌" />
+		<meta
+			property="og:description"
+			content="An elegant winter letter—open the envelope to reveal your card."
+		/>
+		<meta property="og:image" content="assets/og-image.png" />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="You’ve got Christmas mail 💌" />
+		<meta
+			name="twitter:description"
+			content="An elegant winter letter—open the envelope to reveal your card."
+		/>
+		<meta name="twitter:image" content="assets/og-image.png" />
+
+		<link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+		<link rel="stylesheet" href="assets/styles.css" />
+	</head>
+
+	<body data-theme="classic">
+		<a class="skip-link" href="#card">Skip to card</a>
+
+		<main class="app" id="top">
+			<header class="topbar" aria-label="Card header">
+				<div class="brand" aria-hidden="true">
+					<span class="brand-mark">✦</span>
+					<span class="brand-word">Winter Mail</span>
+				</div>
+
+				<div class="route" aria-label="Current route">
+					<span class="route-pill" id="routePill">#/</span>
+				</div>
+			</header>
+
+			<section class="stage" aria-label="Envelope stage">
+				<div class="env-wrap" id="envWrap">
+					<div class="snow" aria-hidden="true" id="snowLayer"></div>
+					<canvas class="sparkle" id="sparkleCanvas" aria-hidden="true"></canvas>
+
+					<article
+						class="envelope"
+						id="envelope"
+						aria-label="Envelope"
+						aria-describedby="hint"
+					>
+						<div class="paper-grain" aria-hidden="true"></div>
+
+						<div class="env-back" aria-hidden="true"></div>
+						<div class="env-front" aria-hidden="true">
+							<div class="env-address" aria-hidden="true">
+								<div class="address-line" id="toLine">To: You</div>
+								<div class="address-sub" id="subLine">A little letter for you</div>
+							</div>
+
+							<button
+								class="wax"
+								id="wax"
+								type="button"
+								aria-label="Open the envelope"
+							>
+								<span class="wax-snowflake" aria-hidden="true">❄</span>
+								<span class="wax-glint" aria-hidden="true"></span>
+							</button>
+						</div>
+
+						<div class="env-flap" aria-hidden="true"></div>
+
+						<section class="card" id="card" tabindex="-1" aria-label="Card">
+							<div class="card-emboss" aria-hidden="true"></div>
+							<div class="card-corner corner-tl" aria-hidden="true"></div>
+							<div class="card-corner corner-br" aria-hidden="true"></div>
+
+							<header class="card-head">
+								<p class="kicker" id="kicker">Merry Christmas 💌</p>
+								<h1 class="headline" id="headline">A little letter for you</h1>
+								<p class="meta" id="meta"></p>
+							</header>
+
+							<div class="card-body" id="message" aria-label="Message">
+								<p>
+									Wishing you a warm, peaceful Christmas and a beautiful start to the new year.
+								</p>
+							</div>
+
+							<footer class="card-foot">
+								<div class="signature" id="signature">—</div>
+								<div class="footer-note" id="footerNote"></div>
+							</footer>
+						</section>
+					</article>
+
+					<p class="hint" id="hint">Tap “Open” or the seal. Keyboard: press Enter on the seal.</p>
+
+					<nav class="controls" aria-label="Card controls">
+						<button class="btn primary" id="openBtn" type="button">Open</button>
+						<button class="btn" id="closeBtn" type="button">Close</button>
+						<button class="btn" id="replayBtn" type="button">Replay</button>
+						<button class="btn" id="copyLinkBtn" type="button">Copy link</button>
+						<a class="btn" id="waBtn" href="#" rel="noopener" target="_blank">
+							Share via WhatsApp
+						</a>
+					</nav>
+
+					<p class="toast" id="toast" role="status" aria-live="polite"></p>
+					<p class="local-note" id="localNote" hidden>Local preview mode (file://): using embedded sample data.</p>
+				</div>
+			</section>
+
+			<footer class="page-foot" aria-label="Footer">
+				<p class="foot-small">
+					Sender tools: <a class="foot-link" href="admin.html">admin.html</a>
+				</p>
+				<p class="foot-tiny">Built as a static site for GitHub Pages.</p>
+			</footer>
+
+			<noscript>
+				<section class="noscript" aria-label="No JavaScript fallback">
+					<h2>Open the letter</h2>
+					<p>
+						JavaScript is disabled. You can still read a generic version of the card.
+					</p>
+					<p>
+						<a class="btn primary" href="#open">Open</a>
+					</p>
+
+					<!--
+						This uses a different anchor so it doesn't conflict with hash routes.
+						With JS disabled, the URL fragment can be anything.
+					-->
+					<div id="open" class="noscript-open">
+						<h3>Merry Christmas 💌</h3>
+						<p><em>A little letter for you</em></p>
+						<p>
+							Wishing you a warm, peaceful Christmas and a beautiful start to the new year.
+						</p>
+						<p>—</p>
+					</div>
+				</section>
+			</noscript>
+		</main>
+
+		<script src="assets/app.js" defer></script>
+	</body>
+</html>

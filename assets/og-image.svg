@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="You’ve got Christmas mail">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#070a0f"/>
+      <stop offset="0.55" stop-color="#0b0f10"/>
+      <stop offset="1" stop-color="#110c0e"/>
+    </linearGradient>
+
+    <radialGradient id="glow" cx="22%" cy="18%" r="70%">
+      <stop offset="0" stop-color="#ffd9aa" stop-opacity="0.16"/>
+      <stop offset="0.55" stop-color="#84b7ff" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fbf3e6"/>
+      <stop offset="1" stop-color="#efe2d0"/>
+    </linearGradient>
+
+    <linearGradient id="paper2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.20"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0.10"/>
+    </linearGradient>
+
+    <linearGradient id="wax" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9ba7a"/>
+      <stop offset="0.55" stop-color="#c9a86a"/>
+      <stop offset="1" stop-color="#7b2b2b"/>
+    </linearGradient>
+
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="24" stdDeviation="22" flood-color="#000" flood-opacity="0.45"/>
+    </filter>
+
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+
+    <pattern id="snow" width="240" height="240" patternUnits="userSpaceOnUse">
+      <circle cx="24" cy="32" r="1.2" fill="#fff" opacity="0.26"/>
+      <circle cx="130" cy="46" r="1.0" fill="#fff" opacity="0.22"/>
+      <circle cx="204" cy="78" r="1.4" fill="#fff" opacity="0.18"/>
+      <circle cx="88" cy="160" r="1.1" fill="#fff" opacity="0.16"/>
+      <circle cx="196" cy="182" r="1.0" fill="#fff" opacity="0.14"/>
+    </pattern>
+
+    <style>
+      .serif { font-family: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif; }
+      .sans { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+  <rect width="1200" height="630" fill="url(#snow)" opacity="0.9"/>
+
+  <!-- Envelope + card illustration -->
+  <g transform="translate(260 110)" filter="url(#shadow)">
+    <!-- Back plate -->
+    <rect x="90" y="80" width="560" height="360" rx="40" fill="url(#paper)"/>
+    <rect x="90" y="80" width="560" height="360" rx="40" fill="url(#paper2)" opacity="0.85"/>
+
+    <!-- Card peeking out -->
+    <g transform="translate(150 30)" filter="url(#soft)">
+      <rect x="0" y="0" width="440" height="320" rx="34" fill="url(#paper)"/>
+      <rect x="22" y="22" width="396" height="276" rx="28" fill="none" stroke="#000" stroke-opacity="0.10" stroke-width="2"/>
+      <!-- corner motif (holly-ish line art, minimal) -->
+      <path d="M44 60c22-18 44-18 66 0" fill="none" stroke="#0b2a1f" stroke-opacity="0.55" stroke-width="3" stroke-linecap="round"/>
+      <path d="M50 70c18-10 36-10 54 0" fill="none" stroke="#c9a86a" stroke-opacity="0.55" stroke-width="3" stroke-linecap="round"/>
+
+      <text x="44" y="144" class="serif" font-size="56" fill="#101515" opacity="0.92">You’ve got</text>
+      <text x="44" y="206" class="serif" font-size="64" fill="#101515" opacity="0.95">Christmas mail</text>
+      <text x="44" y="256" class="sans" font-size="34" fill="#101515" opacity="0.75">💌</text>
+    </g>
+
+    <!-- Front triangles -->
+    <path d="M90 440L370 280L650 440Z" fill="url(#paper)" opacity="0.98"/>
+    <path d="M90 440V80L370 280Z" fill="url(#paper)" opacity="0.95"/>
+    <path d="M650 440V80L370 280Z" fill="url(#paper)" opacity="0.92"/>
+
+    <!-- Flap shadow hint -->
+    <path d="M90 80H650L370 280Z" fill="#000" opacity="0.06"/>
+
+    <!-- Wax seal -->
+    <g transform="translate(586 380)">
+      <circle cx="0" cy="0" r="56" fill="url(#wax)"/>
+      <circle cx="-16" cy="-20" r="20" fill="#fff" opacity="0.22"/>
+      <text x="0" y="16" text-anchor="middle" class="sans" font-size="44" fill="#fff" opacity="0.86">❄</text>
+    </g>
+  </g>
+
+  <!-- Caption text -->
+  <g transform="translate(80 520)">
+    <text class="sans" font-size="24" fill="#eae7df" opacity="0.78" letter-spacing="2">WINTER MAIL</text>
+    <text class="serif" x="0" y="56" font-size="54" fill="#f2efe7" opacity="0.96">Open the envelope to reveal your card</text>
+  </g>
+</svg>

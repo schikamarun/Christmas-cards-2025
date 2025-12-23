@@ -1,0 +1,14 @@
+{
+  "christmas-2025": {
+    "title": "Merry Christmas 💌",
+    "subtitle": "A little letter for you",
+    "defaultTheme": "classic",
+    "footerNote": "Wishing you warmth and light this season."
+  },
+  "new-year-2026": {
+    "title": "A New Year Note ✨",
+    "subtitle": "A small wish for 2026",
+    "defaultTheme": "midnight",
+    "footerNote": "May your year be calm, brave, and bright."
+  }
+}
